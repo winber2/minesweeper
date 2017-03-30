@@ -35,8 +35,9 @@ class Board
   end
 
   def render
-    @grid.each do |row|
-      p row.map {|tile| tile.value }
+    puts "  #{(0..8).to_a.join(" ")}"
+    @grid.each_with_index do |row, idx|
+      puts "#{idx} #{row.join(" ")}"
     end
   end
 
@@ -74,11 +75,4 @@ class Board
     @grid.flatten.reject {|tile| tile.revealed }.size == 10
   end
 
-end
-
-if __FILE__ == $PROGRAM_NAME
-  board = Board.new
-  board.generate_bombs
-  board.generate_values
-  board.render
 end

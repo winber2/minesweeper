@@ -17,12 +17,8 @@ class Tile
     @revealed = true
   end
 
-  def add_flag
-    @flag = true
-  end
-
-  def remove_flag
-    @flag = false
+  def toggle_flag
+    @flag = @flag == true ? false : true
   end
 
   def place_bomb
