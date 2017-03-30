@@ -75,6 +75,10 @@ class Board
     @grid.flatten.reject {|tile| tile.revealed }.size == 10
   end
 
+  def lose?
+    @grid.flatten.any? {|tile| tile.bomb && tile.revealed}
+  end
+
   def tiles_to_reveal(pos)
     return if self[pos].value != 0
     neighbors(pos).each do |tile|

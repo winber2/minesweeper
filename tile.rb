@@ -6,6 +6,13 @@
 class Tile
   attr_accessor :bomb, :flag, :revealed, :value
 
+  COLORS = {
+    1: :blue
+    2: :green
+    3: :red
+    4:  :darl
+  }
+
   def initialize(bomb = false, value = 0)
     @bomb = bomb
     @flag = false
