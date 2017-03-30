@@ -36,7 +36,7 @@ class Board
 
   def render
     @grid.each do |row|
-      p row.map {|tile| tile.bomb }
+      p row.map {|tile| tile.value }
     end
   end
 
@@ -62,11 +62,23 @@ class Board
     num.between?(0,8)
   end
 
+  def generate_values
+    @grid.each_with_index do |row, rdx|
+      row.each_with_index do |tile, cdx|
+        tile.value = neighbor_bombs([rdx,cdx])
+      end
+    end
+  end
+
+  def won?
+    @grid.flatten.reject {|tile| tile.revealed }.size == 10
+  end
 
 end
 
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
   board.generate_bombs
+  board.generate_values
   board.render
 end

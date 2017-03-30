@@ -30,6 +30,7 @@ class Tile
   end
 
   def to_s
+    return "F" if @flag
     @revealed == false ? "*" : "#{value}"
   end
 
