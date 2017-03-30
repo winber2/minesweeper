@@ -39,6 +39,30 @@ class Board
       p row.map {|tile| tile.bomb }
     end
   end
+
+  def neighbors(pos)
+    neighbors = []
+    x, y = pos[0], pos[1]
+    (-1..1).each do |row|
+      (-1..1).each do |col|
+        next if row == 0 && col == 0
+        if within_range?(x + row) && within_range?(y + col)
+          neighbors << [x + row, y + col]
+        end
+      end
+    end
+    neighbors
+  end
+
+  def neighbor_bombs(pos)
+    neighbors(pos).select { |tile| self[tile].bomb }.size
+  end
+
+  def within_range?(num)
+    num.between?(0,8)
+  end
+
+
 end
 
 if __FILE__ == $PROGRAM_NAME
