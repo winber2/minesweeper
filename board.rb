@@ -1,7 +1,7 @@
 require_relative "tile"
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :tiles
 
   def self.create_grid
     @grid = Array.new(9) { Array.new(9) {Tile.new } }
@@ -20,7 +20,7 @@ class Board
   def random_position
     while true
       random_pos = [rand(9),rand(9)]
-      return random_pos if self[random_pos].value == 0
+      return random_pos unless self[random_pos].bomb
     end
   end
 
@@ -73,6 +73,16 @@ class Board
 
   def won?
     @grid.flatten.reject {|tile| tile.revealed }.size == 10
+  end
+
+  def tiles_to_reveal(pos)
+    return if self[pos].value != 0
+    neighbors(pos).each do |tile|
+      if !self[tile].revealed || self[tile].flag
+        self[tile].reveal
+        tiles_to_reveal(tile)
+      end
+    end
   end
 
 end

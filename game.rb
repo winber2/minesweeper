@@ -26,7 +26,12 @@ class Game
 
   def check_move(move, pos)
     if move == "r"
-      @board[pos].reveal
+      if @board[pos].value == 0
+        @board.tiles_to_reveal(pos)
+        @board[pos].reveal
+      else
+        @board[pos].reveal
+      end
     elsif move == "f"
       @board[pos].toggle_flag
     else
