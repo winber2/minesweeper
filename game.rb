@@ -17,11 +17,11 @@ class Game
   def play
     @board.render
 
+    start_time = Time.now
     until @board.won? || @board.lose?
       pos = get_pos
       move = get_move
       check_move(move, pos)
-
       @board.render
     end
 
@@ -33,35 +33,53 @@ class Game
         row.each {|tile| tile.reveal if tile.bomb}
       end
     end
-
+    finish_time = (Time.now - start_time).floor
+    puts "Time elapsed: #{finish_time}"
     @board.render
   end
 
   def check_move(move, pos)
-    if move == "r"
-      if @board[pos].value == 0
-        @board.tiles_to_reveal(pos)
+    begin
+      if move == "r"
+        if @board[pos].value == 0
+          @board.tiles_to_reveal(pos)
+        end
+        @board[pos].reveal
+      elsif move == "f"
+        @board[pos].toggle_flag
       end
-      @board[pos].reveal
-    elsif move == "f"
-      @board[pos].toggle_flag
-    else
+    rescue
+      retry
       puts "Please input either r or f"
     end
   end
 
   def get_pos
-    print "What is your move? e.g. 4,4: "
-    input = gets.chomp
-    save if input == "save"
+    input = ""
+    until valid_pos?(input)
+      print "What is your move? e.g. 4,4: "
+      input = gets.chomp
+      save if input == "save"
+    end
     input.split(",").map(&:to_i)
   end
 
+  def valid_pos?(pos)
+    pos =~ /^[0-8]{1}\,[0-8]{1}$/
+  end
+
   def get_move
-    print "Move: Reveal (R) or Flag (F) "
-    input = gets.chomp
-    save if input == "save"
+    input = ""
+    until valid_move?(input)
+      print "Move: Reveal (R) or Flag (F) "
+      input = gets.chomp
+      save if input == "save"
+    end
     input.downcase[0]
+  end
+
+  def valid_move?(move)
+    move =~ /^[rfRF]$/
   end
 
   def save
