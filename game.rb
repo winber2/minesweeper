@@ -1,7 +1,7 @@
 require_relative "board"
 require_relative "tile"
 require 'yaml'
-require 'byebug'
+require 'colorize'
 
 class Game
   attr_accessor :board
